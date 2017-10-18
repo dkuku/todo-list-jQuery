@@ -10,7 +10,7 @@ $("ul").on("click", "span", function (event) {
     event.stopPropagation();
 });
 //Add new todo on text input enter click
-var delButton = "<span>X</span> ";
+var delButton = "<span><i class='fa fa-trash' aria-hidden='true'></i></span> ";
 
 $("input[type='text']").keypress(function (e) {
     if(e.which === 13)  // the enter key code
@@ -24,3 +24,6 @@ $("input[type='text']").keypress(function (e) {
      }
    });
 
+$(".fa-plus").on("click", function () {
+    $("input[type='text']").fadeToggle(500);    
+});
