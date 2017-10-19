@@ -1,4 +1,5 @@
-//Check off specific tofos by clocking
+var name;
+//Check off specific todos by clicking
 $("ul").on("click", "li", function () {
     $(this).toggleClass("completed");
 });
@@ -27,3 +28,14 @@ $("input[type='text']").keypress(function (e) {
 $(".fa-plus").on("click", function () {
     $("input[type='text']").fadeToggle(500);    
 });
+//on first load check if we have stored name if not then ask for it and display
+window.onload = function () {
+    console.log(window.localStorage);
+    if (!window.localStorage.getItem("name")) {
+        name = prompt("Enter your name");
+        window.localStorage.setItem("name", name);
+    } else {
+        name = window.localStorage.getItem("name");
+    }
+    $("h1").prepend(name + "'s ")
+};
