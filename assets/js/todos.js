@@ -1,14 +1,16 @@
 var name;
+var list;
 //Check off specific todos by clicking
 $("ul").on("click", "li", function () {
     $(this).toggleClass("completed");
     // change if completed in local storage
     var toCheckOff = $(this).text();
     if ($(this).hasClass("completed")) {
-        window.localStorage.setItem(toCheckOff, "true");
+        list[toCheckOff] = true;
     } else {
-        window.localStorage.setItem(toCheckOff, "false");
+        list[toCheckOff] = false;
     }
+    updateList();
 
 });
 //Check if X is clicked, if yes then delete
@@ -16,10 +18,12 @@ $("ul").on("click", "span", function (event) {
     $(this).parent().fadeOut(500, function() {
         var toDelete = $(this).text();
         //remove from localStorage
-        window.localStorage.removeItem(toDelete);
-        //demove from list`
+        delete list[toDelete];
+        updateList();
+        //remove from list`
         $(this).remove();
     });
+    //stop from executing clicks on lower elements
     event.stopPropagation();
 });
 
@@ -33,8 +37,9 @@ $("input[type='text']").keypress(function (e) {
             addToList(todoText);
             // clear input text
             $(this).val("");
-            //add entry to localStorage
-            window.localStorage.setItem(todoText, "false");
+            //add entry to list and update localStorage
+            list[todoText] = false;
+            updateList();
         };
     };    
 });
@@ -42,7 +47,7 @@ $("input[type='text']").keypress(function (e) {
 function addToList (todoText, completed) {
         // generate text button
         var delButton = "<span><i class='fa fa-trash' aria-hidden='true'></i></span>";
-        if (completed === "true") {
+        if (completed === true) {
             var listEntry = "<li class='completed'>" + delButton + todoText + "</li>";
         } else {
             var listEntry = "<li>" + delButton + todoText + "</li>";
@@ -50,6 +55,10 @@ function addToList (todoText, completed) {
         // create a new li and add to ul
         $("ul").append(listEntry);
 }
+
+function updateList() {
+    localStorage.setItem('todoList', JSON.stringify(list));
+};
 
 //hide add todo input
 $(".fa-plus").on("click", function () {
@@ -67,10 +76,9 @@ window.onload = function () {
     $("h1").prepend(name + "'s ")
 
     //restore saved todos from localStorage
-    $.each(localStorage, function(todo, completed){
-        if (completed === "true" || completed === "false") {
-            addToList(todo, completed);
-        }
+    list = JSON.parse(localStorage.getItem("todoList"));
+    
+    $.each(list, function(todo, completed){
+        addToList(todo, completed);
     });
-
 };
