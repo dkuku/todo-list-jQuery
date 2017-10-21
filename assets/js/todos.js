@@ -1,5 +1,6 @@
 var name;
-var list;
+var list = {};
+
 //Check off specific todos by clicking
 $("ul").on("click", "li", function () {
     $(this).toggleClass("completed");
@@ -76,7 +77,9 @@ window.onload = function () {
     $("h1").prepend(name + "'s ")
 
     //restore saved todos from localStorage
-    list = JSON.parse(localStorage.getItem("todoList"));
+    if (!(!window.localStorage.getItem("todoList"))) {
+        list = JSON.parse(localStorage.getItem("todoList"));
+    }
     
     $.each(list, function(todo, completed){
         addToList(todo, completed);
