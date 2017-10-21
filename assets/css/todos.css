@@ -34,10 +34,11 @@ ul {
 }
 li {
     background: white;
-    height: 40px;
+    min-height: 40px;
     line-height: 40px;
     color: #666;
     padding: 0;
+    word-wrap: break-word;
 
 }
 li:nth-child(2n) {
@@ -45,7 +46,7 @@ li:nth-child(2n) {
 }
 span {
     background: #e74c3c;
-    height: 40px;
+    min-height: 40px;
     margin-right: 20px;
     text-align: center;
     color: white;
