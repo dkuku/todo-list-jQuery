@@ -3,7 +3,7 @@ var name;
 $("ul").on("click", "li", function () {
     $(this).toggleClass("completed");
     // change if completed in local storage
-    var toCheckOff = $(this).text().slice(1);
+    var toCheckOff = $(this).text();
     if ($(this).hasClass("completed")) {
         window.localStorage.setItem(toCheckOff, "true");
     } else {
@@ -14,7 +14,7 @@ $("ul").on("click", "li", function () {
 //Check if X is clicked, if yes then delete
 $("ul").on("click", "span", function (event) {
     $(this).parent().fadeOut(500, function() {
-        var toDelete = $(this).text().slice(1);
+        var toDelete = $(this).text();
         //remove from localStorage
         window.localStorage.removeItem(toDelete);
         //demove from list`
@@ -29,17 +29,19 @@ $("input[type='text']").keypress(function (e) {
      {
         // save text to variable
         var todoText = $(this).val()
-        addToList(todoText);
-        // clear input text
-        $(this).val("");
-        //add entry to localStorage
-        window.localStorage.setItem(todoText, "false");
-    }    
+        if (todoText.length >= 1 ) {
+            addToList(todoText);
+            // clear input text
+            $(this).val("");
+            //add entry to localStorage
+            window.localStorage.setItem(todoText, "false");
+        };
+    };    
 });
 
 function addToList (todoText, completed) {
         // generate text button
-        var delButton = "<span><i class='fa fa-trash' aria-hidden='true'></i></span> ";
+        var delButton = "<span><i class='fa fa-trash' aria-hidden='true'></i></span>";
         if (completed === "true") {
             var listEntry = "<li class='completed'>" + delButton + todoText + "</li>";
         } else {
@@ -66,7 +68,7 @@ window.onload = function () {
 
     //restore saved todos from localStorage
     $.each(localStorage, function(todo, completed){
-        if (!(todo === "name")) {
+        if (completed === "true" || completed === "false") {
             addToList(todo, completed);
         }
     });
